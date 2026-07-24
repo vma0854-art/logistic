@@ -1,0 +1,15 @@
+{
+	"name": "devenvadf9001",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "westus3",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "ab630912-8ad9-4637-b8ae-04d7eca36277",
+		"tenantId": "d75eb2b4-acef-4a33-8495-b5b5c0658636"
+	}
+}

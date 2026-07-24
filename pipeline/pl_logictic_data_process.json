@@ -1,0 +1,110 @@
+{
+	"name": "pl_logictic_data_process",
+	"properties": {
+		"activities": [
+			{
+				"name": "Act-Notebook-Execute-Load-Bronze-Initial-Load",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.00:15:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/smurmu90010@outlook.com/logistic/Load_Bronze_Initial_Full_Load",
+					"baseParameters": {
+						"masterPipelineRunID": {
+							"value": "@pipeline().parameters.P_Master_Pipeline_Run_id",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_logistic_adb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Act-Notebook-Execute-Bronze-To-Silver",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Act-Notebook-Execute-Load-Bronze-Initial-Load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:15:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/smurmu90010@outlook.com/logistic/Bronze_To_Silver",
+					"baseParameters": {
+						"masterPipelineRunID": {
+							"value": "@pipeline().parameters.P_Master_Pipeline_Run_id",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_logistic_adb",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Act-Notebook-Execute-Bronze-To-Silver_copy1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Act-Notebook-Execute-Bronze-To-Silver",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.00:15:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Users/smurmu90010@outlook.com/logistic/Bronze_To_Silver",
+					"baseParameters": {
+						"masterPipelineRunID": {
+							"value": "@pipeline().parameters.P_Master_Pipeline_Run_id",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_logistic_adb",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"P_Master_Pipeline_Run_id": {
+				"type": "string"
+			}
+		},
+		"folder": {
+			"name": "csv_files_data_process"
+		},
+		"annotations": [],
+		"lastPublishTime": "2026-07-24T02:08:14Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}
